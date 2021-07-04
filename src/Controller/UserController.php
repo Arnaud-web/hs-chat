@@ -88,6 +88,7 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('user_index');
             }
+        
         }
 
         return $this->render('user/new.html.twig', [
