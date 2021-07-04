@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}import photo{% endblock %}
+
+{% block body %}
+    <h6>Photo de profil</h6>
+
+    {{ include('user_photo/_form.html.twig',{'button_label':'Import photo'}) }}
+
+{#    <a href="{{ path('user_photo_index') }}">back to list</a>#}
+{% endblock %}

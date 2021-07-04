@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Message{% endblock %}
+
+{% block body %}
+    <h6>Message</h6>
+
+{#    <a href="{{ path('message_index') }}">back to list</a>#}
+
+    <div class="card-body " style="background-color: rgba(255,255,255,0.5)">
+        <div class="tab-content">
+            <div class="navigation">
+                {{ knp_pagination_render(messages) }}
+            </div>
+            <div class="active "   id="activity">
+                {% for message in messages %}
+                <!-- Post -->
+                <div class="post clearfix p-1 m-0" style="background-color : {{ message.sender(app.user)? 'rgba(255,255,255,0.2)':'rgba(255,255,255,0.5)'}}" >
+
+                    <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{message.userSend.photo ? asset(message.userSend.photo) : '/avatar.png' }}" alt="User Image">
+                        <span class="username">
+                          <a href="#">{{ message.userSend.name }}</a>
+{#                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>#}
+                        </span>
+                        <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
+                        {% if message.getMessageVu(message.userReceved.id) %}
+                        <span class="description">{{ message.sender(app.user)? 'Receved : ': ''}} {{ message.sender(app.user)?   message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s') : '' }}</span>
+                        {% endif %}
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                       {{ message.message }}
+                        {% if message.getMessageVu(message.userSend.id) %}
+                        <span class="description float-right font-weight-light text-sm text-sm ">{{ message.sender(app.user)?  '' : 'Seen at '}} {{ message.sender(app.user)?   '' : message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s')  }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+                    {% endfor %}
+
+                </div>
+                <!-- /.post -->
+
+
+{#                    <div class="input-group input-group-sm mb-0">#}
+                        {{ form_start(form) }}
+                            <div class="form-horizontal">
+                                {{ form_widget(form.message) }}
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-danger">Send</button>
+                                </div>
+                            </div>
+
+                        {{ form_end(form) }}
+{#                    </div>#}
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+
+        <!-- /.tab-content -->
+    </div>
+{% endblock %}

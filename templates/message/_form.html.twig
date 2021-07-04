@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="input-group-append">
+        <button class="btn btn-danger">{{ button_label|default('Send') }}</button>
+{#        <button type="submit" class="btn btn-danger">Send</button>#}
+    </div>
+{{ form_end(form) }}

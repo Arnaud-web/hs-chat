@@ -1,0 +1,36 @@
+{# total items count #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Message index{% endblock %}
+
+{% block body %}
+
+<div class="count">
+    {{ pagination.getTotalItemCount }}
+</div>
+<table>
+    <tr>
+        {# sorting of properties based on query components #}
+        <th>{{ knp_pagination_sortable(pagination, 'Id', 'm.id') }}</th>
+        <th{% if pagination.isSorted('m.Title') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Title', 'm.title') }}
+        </th>
+        <th{% if pagination.isSorted(['m.date', 'm.time']) %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Release', ['m.date', 'm.time']) }}
+        </th>
+    </tr>
+
+    {# table body #}
+    {% for message in pagination %}
+        <tr {% if loop.index is odd %}class="color"{% endif %}>
+            <td>{{ message.id }}</td>
+            <td>{{ message.message }}</td>
+            <td>{{ message.sendAt | date('Y-m-d') }}, {{ message.sendAt | date('H:i:s') }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>
+{% endblock %}

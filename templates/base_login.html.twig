@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta
+                name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Font Awesome -->
+        <link
+                rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+{#        <!-- Theme style -->#}
+        <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+        <title>
+            MySite |
+            {% block title %}{% endblock %}
+        </title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+                           and uncomment the following Encore helpers to start using Symfony UX #}
+        {% block stylesheets %}
+            {#{{ encore_entry_link_tags('app') }}#}
+        {% endblock %}
+
+        <!-- jQuery -->
+        <script src="../../plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- AdminLTE App -->
+{#        <script src="../../dist/js/adminlte.min.js"></script>#}
+        <!-- AdminLTE for demo purposes -->
+        {% block javascripts %}
+
+        {% endblock %}
+        <style>
+            .style_body{
+                height: 700px;
+                display: block;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+
+                background-image: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.9)), url('../../dist/img/photo4.jpg');
+            }
+        </style>
+
+    </head>
+
+
+    <body class="style_body" style="height: 100%" >
+        {% block body %}{% endblock %}
+    </body>
+</html>

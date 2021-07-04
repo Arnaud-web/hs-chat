@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+
+    <div style="color: black">
+
+    <div class="register"  style="margin: auto;margin-top: 20px;">
+        <div class="register-logo">
+{#            <a>My Site</a>#}
+        </div>
+        <div class="card" style="background-color: rgba(0,0,0,0.3)">
+            <div class="card-body ">
+                <p class="login-box-msg">Edit </p>
+
+                {#                {{ include('user/_form.html.twig') }}#}
+                {{ form_start(form) }}
+                <div class="input-group mb-3">
+                    {{ form_widget(form.name) }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+             <div class="input-group mb-3">
+                                {{ form_widget(form.full_name) }}
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-user"></span>
+                                    </div>
+                                </div>
+                            </div>
+          <div class="input-group mb-3">
+                                        {{ form_widget(form.job) }}
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-book"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                <div class="input-group mb-3">
+                    {{ form_widget(form.email) }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ form_widget(form.adress) }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-home"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ form_widget(form.tel) }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-phone"></span>
+                        </div>
+                    </div>
+                </div>
+                <label> Entrer votre mots de pass pour valider les modifications :  </label><br>
+                <div class="input-group mb-3">
+
+                    {{ form_widget(form.confirm_password) }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{ form_widget(form) }}
+                <button class="btn btn-info">{{ button_label|default('Update') }}</button>
+                {{ form_end(form) }}
+
+                {#                <a href="{{ path('user_index') }}">back to list</a>#}
+{#                <a href="{{ path('app_login') }}" class="text-center">I already have a membership</a>#}
+            </div>
+
+        </div>
+    </div>
+
+
+    </div>
+
+{#    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}#}
+
+{#    <a href="{{ path('user_index') }}">back to list</a>#}
+
+{#    {{ include('user/_delete_form.html.twig') }}#}
+{% endblock %}
