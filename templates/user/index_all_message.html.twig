@@ -53,7 +53,7 @@
         </thead>
         <tbody>
         {% for user in users %}
-
+             {% if user.MessageBy(app.user.id) | length > 0 %}
             <tr>
                 <td style="width: 20px">
                     <img class="profile-user-img img-size-50  " src="/uploads/images/users/profil{{user.photo ? asset(user.photo) : '/avatar.png' }}" alt="User profile picture"></td>
@@ -69,14 +69,14 @@
                     {% endif %}
                 </td>
                 <td>
-                {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1] %}
+               
                     {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userReceved.id) %}
                     {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userSend.id) %}
                         <span class="description float-right font-weight-light text-sm text-sm ">{{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sender(app.user)?  '' : 'Seen at '}} {{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sender(app.user)?   '' : user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userReceved.id).vuAt |date('Y-m-d H:i:s')  }}</span>
                     {% endif %}
                         {% else %}
                         <span class= "description float-right font-weight-light text-sm text-sm badge badge-success">new</span>
-                    {% endif %}
+                  
                     {% endif %}
                 </td>
                 <td >
@@ -98,6 +98,7 @@
                     </p>
                 </td>
             </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="7">no records found</td>
