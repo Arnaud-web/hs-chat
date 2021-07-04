@@ -69,12 +69,14 @@
                     {% endif %}
                 </td>
                 <td>
+                {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1] %}
                     {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userReceved.id) %}
                     {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userSend.id) %}
                         <span class="description float-right font-weight-light text-sm text-sm ">{{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sender(app.user)?  '' : 'Seen at '}} {{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sender(app.user)?   '' : user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userReceved.id).vuAt |date('Y-m-d H:i:s')  }}</span>
                     {% endif %}
                         {% else %}
                         <span class= "description float-right font-weight-light text-sm text-sm badge badge-success">new</span>
+                    {% endif %}
                     {% endif %}
                 </td>
                 <td >
