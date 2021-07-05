@@ -8,6 +8,12 @@ vich_uploader:
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_remove: true
             delete_on_update: true
+        message_image_profil:
+            uri_prefix: /uploads/images/users/message
+            upload_destination: '%kernel.project_dir%/public/uploads/images/users/message'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_remove: true
+            delete_on_update: true
     #    products:
     #        uri_prefix: /images/products
     #        upload_destination: '%kernel.project_dir%/public/images/products'

@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MessageType extends AbstractType
 {
@@ -18,6 +19,10 @@ class MessageType extends AbstractType
                     'placeholder'=>'Message',
                     'class'=>'form-control form-control-sm'
                 ]
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'label'=> 'add Photo',
             ])
 
 //            ->add('userSend')

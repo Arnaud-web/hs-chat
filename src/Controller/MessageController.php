@@ -82,15 +82,13 @@ class MessageController extends AbstractController
 
 //    dd($messages);
         $nombre = count($messages)/4;
-        if($nombre<1){
-            $nombre = 1;
-//            $max =
-        }
-//        dd(round($nombre));
         if($nombre>round($nombre)){
-        $nombre = 1+1;
+            $nombre = round($nombre)+1;
 //            $max =
+        }elseif ($nombre == round($nombre)){
+            $nombre = round($nombre);
         }
+//
         $nombre = round($nombre);
 //        dd($nombre);
         $messagesp = $paginator->paginate(

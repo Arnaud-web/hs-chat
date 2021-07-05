@@ -6,9 +6,12 @@ use App\Repository\MessageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
+ * @Vich\Uploadable()
  */
 class Message
 {
@@ -53,6 +56,24 @@ class Message
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $new;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var File
+     * @Vich\UploadableField(mapping="message_image_profil",fileNameProperty="image")
+     *
+     */
+    private $imageFile;
+
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -180,6 +201,45 @@ class Message
     public function setNew(?bool $new): self
     {
         $this->new = $new;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+        if ($imageFile){
+            $this->updatedAt = new \DateTime();
+        }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updateAt): self
+    {
+        $this->updatedAt = $updateAt;
 
         return $this;
     }

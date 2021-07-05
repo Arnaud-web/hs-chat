@@ -21,7 +21,7 @@
                     <div class="user-block">
                         <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{message.userSend.photo ? asset(message.userSend.photo) : '/avatar.png' }}" alt="User Image">
                         <span class="username">
-                          <a href="#">{{ message.userSend.name }}</a>
+                          <a href="{{ path('user_show', {'name': message.userSend.name}) }}">{{ message.userSend.name }}</a>
 {#                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>#}
                         </span>
                         <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
@@ -32,6 +32,10 @@
                     <!-- /.user-block -->
                     <p>
                        {{ message.message }}
+                        {% if message.image %}
+                            <br>
+                            <a href="{{vich_uploader_asset(message) }}" ><img class="w-25" src=" {{vich_uploader_asset(message) }}"></a>
+                        {% endif %}
                         {% if message.getMessageVu(message.userSend.id) %}
                         <span class="description float-right font-weight-light text-sm text-sm ">{{ message.sender(app.user)?  '' : 'Seen at '}} {{ message.sender(app.user)?   '' : message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s')  }}</span>
                         {% endif %}
@@ -45,6 +49,7 @@
 
 {#                    <div class="input-group input-group-sm mb-0">#}
                         {{ form_start(form) }}
+                        {{ form_widget(form.imageFile) }}
                             <div class="form-horizontal">
                                 {{ form_widget(form.message) }}
                                 <div class="input-group-append">
