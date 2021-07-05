@@ -10,7 +10,8 @@
     <div class="card-body " style="background-color: rgba(255,255,255,0.5)">
         <div class="tab-content">
             <div class="navigation">
-                {{ knp_pagination_render(messages) }}
+                {{ knp_pagination_render(messages,'message/_pagination.html.twig') }}
+
             </div>
             <div class="active "   id="activity">
                 {% for message in messages %}
