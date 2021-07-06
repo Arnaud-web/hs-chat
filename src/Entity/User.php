@@ -108,6 +108,11 @@ class User implements UserInterface
      */
     private $messageVus;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Style::class, mappedBy="userStyle", cascade={"persist", "remove"})
+     */
+    private $style;
+
     public function __construct()
     {
         $this->userPhotos = new ArrayCollection();
@@ -538,6 +543,28 @@ class User implements UserInterface
                 $messageVu->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStyle(): ?Style
+    {
+        return $this->style;
+    }
+
+    public function setStyle(?Style $style): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($style === null && $this->style !== null) {
+            $this->style->setUserStyle(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($style !== null && $style->getUserStyle() !== $this) {
+            $style->setUserStyle($this);
+        }
+
+        $this->style = $style;
 
         return $this;
     }

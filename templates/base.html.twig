@@ -57,7 +57,53 @@
 {% endblock %}
 </div>
 </body>
+<aside class="control-sidebar control-sidebar-dark" style="top: 57px; height: 609px; display: none;">
+    <!-- Control sidebar content goes here -->
+    <div class="p-3 control-sidebar-content os-host os-theme-light os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y" style="height: 609px;">
+        <div class="os-resize-observer-host observed">
+            <div class="os-resize-observer" style="left: 0px; right: auto;"></div>
+        </div>
+        <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;"><div class="os-resize-observer"></div></div><div class="os-content-glue" style="margin: -16px;"></div>
+        <div class="os-padding"><div class="os-viewport os-viewport-native-scrollbars-invisible" ><div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
+                    <h5>Customize Style</h5><hr class="mb-2">
+                    {% set listes = ['red','purple','green','blue','olive','lightsalmon'] %}
+                    {% for liste in listes %}
+
+                        <div class="mb-1 form-control" style="background-color: {{ liste }}">
+                            <a id="dark" class="xx m-2 " >{{ liste }}</a>
+                        </div>
+
+                    {% endfor %}
+
+                    <div class="mb-4">
+                        <form method="get" action="{{ path('home') }}">
+                            <input id="navcolor" type="hidden" name="navcolor" value="">
+                            <input type="submit" value="save">
+                        </form>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+    {% if app.user.style %}
+        {% if app.user.style.navColor %}
+            <script>
+                    $('nav').css( 'background-color', '{{ app.user.style.navColor }}' );
+            </script>
+        {% endif %}
+    {% endif %}
+    <script>
+
+        $('.xx').on( "click", function() {
+        $('nav').css( 'background-color', $(this).text() );
+        $('#navcolor').val($(this).text() );
+        });
+    </script>
 
 </html>
 </div></body>
-{#<script src="../../dist/js/demo.js"></script></html>#}
+{#<script src="../../dist/js/demo/.js"></script></html>#}

@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New Message{% endblock %}
+   {% block javascripts %}
 
+   {% endblock %}
 {% block body %}
     <h6>Message</h6>
 
@@ -49,6 +51,7 @@
 
 {#                    <div class="input-group input-group-sm mb-0">#}
                         {{ form_start(form) }}
+
                         {{ form_widget(form.imageFile) }}
                             <div class="form-horizontal">
                                 {{ form_widget(form.message) }}

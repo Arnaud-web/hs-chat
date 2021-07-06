@@ -22,7 +22,12 @@ class MessageType extends AbstractType
             ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
-                'label'=> 'add Photo',
+//                'label' => 'PDF File',
+//                 'download_label' => '...',
+                'attr'=>[
+                    'placeholder'=>'add image',
+                    'class'=>''
+                ]
             ])
 
 //            ->add('userSend')
