@@ -23,6 +23,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
+                "paging": false,
                 // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
@@ -40,72 +41,57 @@
 {% block body %}
     <h5>{{ titre? titre : 'Trouver des amis'}}  </h5>
 
-    <table class="table" id="example1">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Message</th>
-                <th>Date</th>
-                <th>Seen</th>
-                <th><span class="float-right ">actions</span></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-             {% if user.MessageBy(app.user.id) | length > 0 %}
-            <tr>
-                <td style="width: 20px">
-                    <img class="profile-user-img img-size-50  " src="/uploads/images/users/profil{{user.photo ? asset(user.photo) : '/avatar.png' }}" alt="User profile picture"></td>
-                <td class="col-2"><a href="{{ path('user_show', {'name': user.name}) }}" >{{ user.name }}</a></td>
-                <td class="col-2">
-                    {% if user.MessageBy(app.user.id) | length > 0 %}
-                     <p class="text-sm">{{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].message }}</p>
-                    {% endif %}
-                </td>
-                <td class="col-2">
-                    {% if user.MessageBy(app.user.id) | length > 0 %}
-                     <p class="text-sm">{{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sendAt |date('Y-m-d H:i:s')  }}</p>
-                    {% endif %}
-                </td>
-                <td>
-               
-                    {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userReceved.id) %}
-                    {% if user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userSend.id) %}
-                        <span class="description float-right font-weight-light text-sm text-sm ">{{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sender(app.user)?  '' : 'Seen at '}} {{ user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].sender(app.user)?   '' : user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].getMessageVu(user.MessageBy(app.user.id)[user.MessageBy(app.user.id) | length - 1].userReceved.id).vuAt |date('Y-m-d H:i:s')  }}</span>
-                    {% endif %}
-                        {% else %}
-                        <span class= "description float-right font-weight-light text-sm text-sm badge badge-success">new</span>
-                  
-                    {% endif %}
-                </td>
-                <td >
-                    <p class="float-right ">
-                    <a  class="p-2" href="{{ path('user_show', {'name': user.name}) }}"><i class="fas fa-info-circle" ></i>About</a>
-{#                        {{ app.user.isFrind(user) }}#}
-                        {% if app.user.isFrind(user) %}
-                            <a class="text-red p-2"  href="{{ path('frind_new', {'name': user.name}) }}">-<i class="fa fa-user"></i></a>
-                            <a class="text-white  p-2"  href="{{ path('message_new', {'name': user.name}) }}"><i class="fa fa-mail-bulk"></i>
-                                {% if  user.NewMessage(app.user.id) | length > 0 %}
-                                <span class="badge bg-danger navbar-badge " style="  right: auto!important;  top: auto!important;">{{ user.NewMessage(app.user.id) | length}}</span>
-                                {% endif %}
-                            </a>
-{#                            <i>{{ user.getMessagesSendBy(app.user.id) | length }}</i>#}
-                        {% else %}
-                            <a  class="p-2" href="{{ path('frind_new', {'name': user.name}) }}">+<i class="fa fa-user"></i></a>
+{#    <table class="table" id="example1">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th></th>#}
+{#                <th>Name</th>#}
+{#                <th>Message</th>#}
+{#                <th>Date</th>#}
+{#                <th>Seen</th>#}
+{#                <th><span class="float-right ">actions</span></th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+        <div class="active "   id="activity">
+            {% for message in messages %}
+                <!-- Post -->
+{#                <a href="{{ path('message_new', {'name': message.userSend.name}) }}">#}
 
+                <div class="post clearfix p-1 m-0" style="background-color : {{ message.sender(app.user)? 'rgba(255,255,255,0.2)':'rgba(255,255,255,0.5)'}}" >
+
+                    <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{message.userSend.photo ? asset(message.userSend.photo) : '/avatar.png' }}" alt="User Image">
+                        <span class="username">
+                          <a href="{{ path('user_show', {'name': message.userSend.name}) }}">{{ message.userSend.name }}</a>
+{#                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>#}
+                        </span>
+                        <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
+                        {% if message.getMessageVu(message.userReceved.id) %}
+                            <span class="description">{{ message.sender(app.user)? 'Receved : ': ''}} {{ message.sender(app.user)?   message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s') : '' }}</span>
+                        {% endif %}
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                        <a href="{{ path('message_new', {'name': message.userSend.name}) }}" ><span class=" pl-4" > {{ message.message }} </span></a>
+                        {% if message.image %}
+                            <br>
+                            <a href="{{vich_uploader_asset(message) }}" ><img class="w-25" src=" {{vich_uploader_asset(message) }}"></a>
+                        {% endif %}
+{#                        {{ dump(message.getMessageVu(message.userSend.id).vuAt) }}#}
+{#                        {{ dump(message) }}#}
+                        {%  if message.getMessageVu(app.user.id).vuAt  is defined  %}
+                            <span class="description float-right font-weight-light text-sm text-sm "> 'Seen at  {{   message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s') }}</span>
+                            {% else %}
+                                <span class=" float-right p-2 badge badge-success badge-sm ">  </span>
                         {% endif %}
                     </p>
-                </td>
-            </tr>
-            {% endif %}
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
 
+            {% endfor %}
+
+        </div>
+        {{ knp_pagination_render(messages,'user/_pagination.html.twig') }}
 {#    <a href="{{ path('user_new') }}">Create new</a>#}
+{#        </tbody>#}
 {% endblock %}

@@ -81,12 +81,20 @@ class MessageController extends AbstractController
 //        $messagesR =$this->getDoctrine()->getRepository(Message::class)->findBy(['userReceved'=>$user]);
 
 //    dd($messages);
+//        dd(count($messages));
+
         $nombre = count($messages)/4;
         if($nombre>round($nombre)){
             $nombre = round($nombre)+1;
 //            $max =
         }elseif ($nombre == round($nombre)){
             $nombre = round($nombre);
+        }
+        if ($nombre < round($nombre)){
+            $nombre = round($nombre);
+        }
+        if(count($messages)==0){
+            $nombre = 1;
         }
 //
         $nombre = round($nombre);

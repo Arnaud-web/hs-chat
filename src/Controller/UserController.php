@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\User;
 use App\Form\UserEditType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,20 +31,77 @@ class UserController extends AbstractController
     {
         $users= $this->getUser()->getFrinds();
 //        dd($this->getUser()->getMessagesSend());
-
+        $iterator = $users->getIterator();
+        $iterator->uasort(function ($a, $b) {
+            return ($a->getName() < $b->getName()) ? -1 : 1;
+        });
+//        dd($iterator);
+        $users  = $iterator;
+        $collection = new ArrayCollection(iterator_to_array($iterator));
         return $this->render('user/index.html.twig', [
             'users' => $users,
             'titre' => 'suivies',
         ]);
     }
     #[Route('/all_messages', name: 'all_message_index', methods: ['GET'])]
-    public function allMessage(UserRepository $userRepository): Response
+    public function allMessage(PaginatorInterface $paginator,Request $request,UserRepository $userRepository): Response
     {
         $users= $this->getUser()->getFrinds();
+//        $messages = $this->getDoctrine()->getRepository(Message::class)->findBy(['userReceved'=>$this->getUser()],['sendAt'=>'desc']);
 
+//        dd($u);
+        $messages_ = new ArrayCollection();
+//        foreach ($messages as $index => $message){
+////            dd($message->getUserReceved()->getId() , $messages[$index + 1]->getUserReceved()->getId());
+//            if (isset($messages[$index+1])) {
+////                $messages_->add($message);
+////                var_dump($message->getUserSend()->getId() .$messages[$index + 1]->getUserSend()->getId());
+//                if ($message->getUserSend()->getId() == $messages[$index + 1]->getUserSend()->getId()) {
+//                    $messages_->remove($messages_->next());
+////                    dd("ok");
+//                }
+//            }
+//        }
+//        $messages = $messages_;
+        $messages = new ArrayCollection();
+        foreach ($users as $user){
+            $msg = $user->getMessageBy($this->getUser()->getId());
+            if (count($msg) > 0 ){
+               $msg =  $msg[count($msg) - 1];
+               $messages->add($msg);
+//                            dd($msg);
+            }
+        }
+//        dd($messages);
+        $nombre = count($messages)/4;
+//        dd(($nombre));
+        if($nombre>round($nombre)){
+            $nombre = round($nombre)+1;
+//            $max =
+        }elseif ($nombre == round($nombre)){
+            $nombre = round($nombre);
+        }elseif ($nombre < round($nombre)){
+            $nombre = round($nombre) ;
+        }
+
+        if(count($messages)==0){
+            $nombre = 1;
+        }
+//        dd($nombre);
+        $messages = $paginator->paginate(
+        // Doctrine Query, not results
+            $messages,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+//           dd( $request->query->getInt('page',2)),
+            // Items per page
+            4,[
+
+            ]
+        );
 
         return $this->render('user/index_all_message.html.twig', [
-            'users' => $users,
+            'messages' => $messages,
             'titre' => 'All Messages',
         ]);
     }
@@ -50,6 +110,12 @@ class UserController extends AbstractController
     {
         $users= $this->getUser()->getMyFrind();
 //        dd($users);
+        $iterator = $users->getIterator();
+        $iterator->uasort(function ($a, $b) {
+            return ($a->getName() < $b->getName()) ? -1 : 1;
+        });
+//        dd($iterator);
+        $users  = $iterator;
         return $this->render('user/index.html.twig', [
             'users' => $users,
             'titre' => 'Abonnees',
