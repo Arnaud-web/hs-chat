@@ -21,7 +21,7 @@
         <p class="text-muted text-center">{{ user.job }}</p>
         <ul class="list-group  mb-3 " style="background-color: rgba(0,0,0,0)">
             {% if app.user.id == user.id %}
-            <p><a class="btn btn-outline-light text-gray float-right btn-tool text-dark" href="{{ path('user_edit', {'id': user.id}) }}"> <i class="fas fa-edit"></i> edit</a></p>
+            <p><a class="btn btn-outline-light text-gray float-right btn-tool text-dark" href="{{ path('user_edit', {'name': user.name}) }}"> <i class="fas fa-edit"></i> edit</a></p>
             {% endif %}
             <li class="list-group-item" style="background-color: rgba(0,0,0,0)">
                 <b>Name</b> <i class="float-right">{{ user.name }}</i>

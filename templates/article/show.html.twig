@@ -3,11 +3,12 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
-<div class="pt-5" style="margin-top: inherit ;">
+<div class="pt-2" style="">
 {% if app.user.id == article.userCreated.id %}
-    <a href="{{ path('article_edit', {'slug': article.slug}) }}">edit</a>
+   <div > <a class=" btn btn-outline-info" href="{{ path('article_edit', {'slug': article.slug}) }}"> <i class="fas fa-edit"></i> edit</a>
+   </div>
     {% endif %}
-    <div class="post clearfix p-2">
+    <div class="post clearfix p-2 ">
         <div class="user-block">
             <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
             <span class="username">
