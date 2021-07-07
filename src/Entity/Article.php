@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @Vich\Uploadable()
  */
 class Article
 {
@@ -56,6 +58,23 @@ class Article
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="articles")
      */
     private $categorie;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var File
+     * @Vich\UploadableField(mapping="user_image_article",fileNameProperty="image")
+     *
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -154,6 +173,45 @@ class Article
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(File $imageFile = null): self
+    {
+        $this->imageFile = $imageFile;
+        if ($imageFile){
+            $this->updatedAt = new \DateTime();
+        }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

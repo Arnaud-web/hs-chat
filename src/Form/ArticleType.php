@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ArticleType extends AbstractType
 {
@@ -20,7 +21,11 @@ class ArticleType extends AbstractType
             ->add('statu',CheckboxType::class, [
                 'label'    => 'Publier ?',
                 'required' => false,
-            ]);
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'label'=> false,
+            ])
 //            ->add('userCreated')
         ;
     }

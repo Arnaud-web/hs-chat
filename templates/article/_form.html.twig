@@ -2,6 +2,17 @@
 {#    {{ form_widget(form) }}#}
 {#    <button class="btn">{{ button_label|default('Save') }}</button>#}
 {#{{ form_end(form) }}#}
+<style>
+    .c img{
+        /*width: 500px;*/
+        max-width: 100%;
+        height: auto;
+    }
+    .input-group-text {
+        min-width: 100px;
+    }
+
+</style>
 <div class="pt-3 form ">
     {{ form_start(form) }}
     <div class="input-group ">
@@ -16,14 +27,23 @@
         </div>
         {{ form_widget(form.titre) }}
     </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Description </span>
-        </div>
+    <div class="form">
+        <label >
+            <span>Description : </span>
+        </label>
+        <br>
+        <div>
         {{ form_widget(form.description) }}
+        </div>
     </div>
+    {{ form_widget(form.statu) }}
+    <label>Add Image : </label>
+    <div class="c row gx-4 gx-lg-5 align-items-center ">
+        <div class="col-lg-5">
+    {{ form_widget(form.imageFile) }}
+        </div>
 
-    {{ form_widget(form) }}
+    </div>
     <button class="btn btn-success"><i class="fas fa-upload"></i> {{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
 

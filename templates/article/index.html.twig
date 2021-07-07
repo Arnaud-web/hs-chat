@@ -8,6 +8,34 @@
     <div class="" style="">
 
         {% for article in articles %}
+            {% if article.image %}
+                <div>
+                    <div class="user-block" style="display:contents">
+                        <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
+                        <span class="username">
+                          <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
+                          <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
+                        </span>
+                        <span class="description"> publier le {{ article.createdAt | date('Y-m-d H:i:s')  }}</span>
+                    </div>
+                    <br>
+            <div class=" mb-6">
+
+                <div class="row gx-4 gx-lg-5 align-items-center ">
+                    <div class="col-lg-5"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
+                    <div class="col-lg-7">
+                        <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
+                        <p>{{ article.description }}</p>
+{#                        <a class="btn btn-primary" href="#!">Call to Action!</a>#}
+                    </div>
+                </div>
+                <div class="col-12 pt-3">
+                    <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">Plus ...</a>
+                    <hr>
+                </div>
+            </div>
+            </div>
+            {% else %}
             <div class="post clearfix p-2">
                 <div class="user-block">
                     <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
@@ -27,10 +55,9 @@
             </div>
 
 
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
+
+
+            {% endif %}
         {% endfor %}
 
     </div>
