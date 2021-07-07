@@ -23,7 +23,8 @@ class UserController extends AbstractController
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findBy([],['name'=>'asc']),
-            'titre' =>''
+            'titre' =>'',
+            'amis'=>true
         ]);
     }
     #[Route('/suivies', name: 'suivie_index', methods: ['GET'])]
@@ -41,6 +42,7 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $users,
             'titre' => 'suivies',
+            'suivies'=>true
         ]);
     }
     #[Route('/all_messages', name: 'all_message_index', methods: ['GET'])]
@@ -103,6 +105,7 @@ class UserController extends AbstractController
         return $this->render('user/index_all_message.html.twig', [
             'messages' => $messages,
             'titre' => 'All Messages',
+            'msg'=>true
         ]);
     }
     #[Route('/abonnees', name: 'abonnee_index', methods: ['GET'])]
@@ -119,6 +122,7 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $users,
             'titre' => 'Abonnees',
+            'abonnee'=>true
         ]);
     }
     #[Route('/-{name}/', name: 'frind_new', methods: ['GET'])]

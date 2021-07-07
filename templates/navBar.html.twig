@@ -1,16 +1,21 @@
 <div class="wrapper">
 
 
-<nav class="main-header navbar navbar-expand nnavbar-white navbar-light" style="background-color: rgba(0,0,0,0.5)">
+<nav  class="theme main-header navbar navbar-expand nnavbar-white navbar-dark " style="background-color: rgba(0,0,0,0.5)">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ path('home') }}" class="nav-link">
+            <a style="background-color: rgba(0,0,0,0.2)" href="{{ path('home') }}" class="nav-link {{ home is defined? 'active' : ''}} ">
                 <i class="fas fa-home"></i>
                 Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a style="background-color: rgba(0,0,0,0.2)" href="{{ path('article_index') }}" class="nav-link {{ article_index is defined? 'active' : ''}} ">
+                <i class="fas "></i>
+                Publications </a>
         </li>
 {#        <li class="nav-item d-none d-sm-inline-block">#}
 {#            <a href="#" class="nav-link">Contact</a>#}

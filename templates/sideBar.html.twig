@@ -1,14 +1,14 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgba(0,0,0,0.5)">
+<aside class="theme main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgba(0,0,0,0.5)">
     <!-- Brand Logo -->
-    <a href="" class="brand-link">
+    <a style="background-color: rgba(0,0,0,0.3)" href="" class="brand-link">
         <img src="../../dist/img/AdminLTELogo.png" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">My Site</span>
+        <span  class="brand-text font-weight-light">My Site</span>
     </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div style="background-color: rgba(0,0,0,0.2)" class="sidebar ">
         <!-- Sidebar user (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div style="background-color: rgba(0,0,0,0.3)" class="user-panel m-2 p-2 d-flex">
             <div class="image">
                 <img src="/uploads/images/users/profil{{app.user.photo ? asset(app.user.photo) : '/avatar.png' }}" class="img-circle elevation-2" alt="User Image">
             </div>
@@ -39,20 +39,61 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul style="background-color: rgba(0,0,0,0.3)" class=" nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
+                    <a href="{{ path('all_message_index') }}" class="nav-link {{ creepub is defined ? 'active': '' }}">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-globe"></i>
+                            <p>
+                                Publications
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    </a>
+                    <ul class="nav  nav-treeview">
+                        <li class="nav-item">
+                            <a  href="{{ path('article_new') }}" class="nav-link {{ article_new is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>
+                                    créer un publication
+{#                                    <span class="right badge badge-danger">New</span>#}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  href="{{ path('article_index') }}" class="nav-link {{ article_index is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>
+                                    Publication
+{#                                    <span class="right badge badge-danger">New</span>#}
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  href="{{ path('my_article_index') }}" class="nav-link {{ my_article_index is defined ? 'active': '' }}">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>
+                                    My Publication
+{#                                    <span class="right badge badge-danger">New</span>#}
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-address-book"></i>
                         <p>
                             Amis
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+
+                    <ul class="nav  nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ path('user_index') }}" class="nav-link">
+                            <a  href="{{ path('user_index') }}" class="nav-link {{ amis is defined ? 'active': '' }}">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Trouver des amis
@@ -61,7 +102,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('suivie_index') }}" class="nav-link">
+                            <a href="{{ path('suivie_index') }}" class="nav-link {{ suivies is defined ? 'active': '' }}">
                                 <i class="text-blue nav-icon fas fa-users"></i>
                                 <p>
                                     suivies
@@ -70,7 +111,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('abonnee_index') }}" class="nav-link">
+                            <a href="{{ path('abonnee_index') }}" class="nav-link {{ abonnee is defined ? 'active': '' }}">
                                 <i class="text-red nav-icon fas fa-users"></i>
                                 <p>
                                     Abonnees
@@ -81,7 +122,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('all_message_index') }}" class="nav-link">
+                    <a href="{{ path('all_message_index') }}" class="nav-link {{ msg is defined ? 'active': '' }}">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>
                             Messages

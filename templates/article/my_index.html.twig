@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+{% endblock %}
+{% block javascripts %}
+    <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    {#    <script src="../../plugins/jszip/jszip.min.js"></script>#}
+    {#    <script src="../../plugins/pdfmake/pdfmake.min.js"></script>#}
+    {#    <script src="../../plugins/pdfmake/vfs_fonts.js"></script>#}
+    <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "pageLength": 5,
+                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+{% endblock %}
+{% block body %}
+
+
+    <div class="pt-5" style="margin-top: inherit ;">
+        <table class="table" id="example1">
+            <thead>
+            <tr>
+
+                <th>Titre</th>
+                <th>Statu</th>
+                <th>created At</th>
+                <th><span class="float-right ">actions</span></th>
+            </tr>
+            </thead>
+            <tbody>
+        {% for article in articles %}
+{#            {{ dump(article) }}#}
+            <tr>
+                <td>
+                    {{ article.titre }}
+                </td>
+
+                <td>
+                    {{ article.statu? '<span class="badge badge-success" >publier</span>':'<span class="badge badge-danger" > non publier</span>' }}
+
+                </td>
+                <td>
+                    {{ article.createdAt | date('Y-m-d H:i:s')  }}
+                </td>
+            <td>
+                <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">voir </a>
+            </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{#    <a href="{{ path('article_new') }}">Create new</a>#}
+{% endblock %}

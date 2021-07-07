@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(Request $request): Response
     {
-//        dd($request->query->get('navcolor'));
+//        dd($request);
         if($request->query->get('navcolor')){
             $style = $this->getDoctrine()->getRepository(Style::class)->findOneBy(['userStyle'=>$this->getUser()]);
 //            dd($test);
@@ -29,6 +29,7 @@ class HomeController extends AbstractController
         }
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
+            'home'=>true
         ]);
     }
 }

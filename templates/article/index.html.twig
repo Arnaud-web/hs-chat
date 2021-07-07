@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+
+
+    <div class="" style="margin-top: inherit">
+
+        {% for article in articles %}
+            <div class="post clearfix p-2">
+                <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
+                    <span class="username">
+                          <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
+                          <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
+                        </span>
+                    <span class="description"> publier le {{ article.createdAt | date('Y-m-d H:i:s')  }}</span>
+                </div>
+                <!-- /.user-block -->
+                <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
+                <p>
+            {{ article.description }}
+                </p>
+                <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">Plus ...</a>
+
+            </div>
+
+
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+
+    </div>
+
+{#    <a href="{{ path('article_new') }}">Create new</a>#}
+{% endblock %}

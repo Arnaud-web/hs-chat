@@ -25,6 +25,7 @@
     <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="{{ asset('dist/js/w3color.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     {% block javascripts %}
         {#{{ encore_entry_script_tags('app') }}#}
@@ -47,17 +48,17 @@
         background-color: rgba(255,255,255,0.4);
     }
 </style>
-<body class="style_body">
+<body class="style_body layout-navbar-fixed">
 {% include "navBar.html.twig"  %}
 {% include "sideBar.html.twig"  %}
-<div class="content-wrapper style_contenu">
+<div class="content-wrapper style_contenu" style="">
 
 
 {% block body %}
 {% endblock %}
 </div>
 </body>
-<aside class="control-sidebar control-sidebar-dark" style="top: 57px; height: 609px; display: none;">
+<aside class="theme control-sidebar control-sidebar-dark" style="top: 57px; height: 609px; display: none;">
     <!-- Control sidebar content goes here -->
     <div class="p-3 control-sidebar-content os-host os-theme-light os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y" style="height: 609px;">
         <div class="os-resize-observer-host observed">
@@ -66,19 +67,66 @@
         <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;"><div class="os-resize-observer"></div></div><div class="os-content-glue" style="margin: -16px;"></div>
         <div class="os-padding"><div class="os-viewport os-viewport-native-scrollbars-invisible" ><div class="os-content" style="padding: 16px; height: 100%; width: 100%;">
                     <h5>Customize Style</h5><hr class="mb-2">
-                    {% set listes = ['red','purple','green','blue','olive','lightsalmon'] %}
+
+                    {% set listes = ['red','purple','green','blue','olive','lightsalmon','black','Tomato'] %}
                     {% for liste in listes %}
 
-                        <div class="mb-1 form-control" style="background-color: {{ liste }}">
+                        <div class="mb-1" style="display: inline;background-color: {{ liste }}">
                             <a id="dark" class="xx m-2 " >{{ liste }}</a>
                         </div>
 
                     {% endfor %}
 
+                    <div class="">
+                        <div class="">
+                            <div class="">
+                            </div>
+                            <div class="">
+                                <div id="rgbresult" style=""><a class="xx m-2" id="rgbresulttext" style=""></a></div>
+                            </div>
+                            <div class="">
+                            </div>
+                        </div>
+                        <div class="r">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-red"></span>
+                                </div>
+                                <input onchange="changeRGB()" oninput="changeRGB()" type="range" id="slideRed" name="slideRed" value="130" min="0" max="255">
+{#                                <input type="text" class="form-control">#}
+                                <div class="input-group-append">
+                                    <span id="valRed2" xstyle="background-color:red;border-radius:5px;color:white;opacity:0.8">0</span>
+{#                                    <span class="input-group-text">.00</span>#}
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-green"></span>
+                                </div>
+{#                                <input type="text" class="form-control">#}
+                                <input onchange="changeRGB()" oninput="changeRGB()" type="range" id="slideGreen" name="slideGreen" value="130" min="0" max="255">
+                                <div class="input-group-append">
+{#                                    <span class="input-group-text">.00</span>#}
+                                    <span id="valGreen2" xstyle="background-color:#00ff00;border-radius:5px;opacity:0.8">0</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-blue"></span>
+                                </div>
+                                    <input onchange="changeRGB()" oninput="changeRGB()" type="range" id="slideBlue" name="slideBlue" value="130" min="0" max="255">
+                                <div class="input-group-append">
+                                    <span id="valBlue2" xstyle="background-color:blue;border-radius:5px;color:white;opacity:0.8">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="mb-4">
-                        <form method="get" action="{{ path('home') }}">
+                        <form class="form" method="get" action="{{ path('home') }}">
                             <input id="navcolor" type="hidden" name="navcolor" value="">
-                            <input type="submit" value="save">
+                            <input type="submit" class=" btn btn-primary btn-sm form-control" value="save">
                         </form>
 
                     </div>
@@ -92,17 +140,47 @@
     {% if app.user.style %}
         {% if app.user.style.navColor %}
             <script>
-                    $('nav').css( 'background-color', '{{ app.user.style.navColor }}' );
+                    {#$('nav').css( 'background-color', '{{ app.user.style.navColor }}' );#}
+                    $('.theme').css('background', 'linear-gradient(#00000000, rgb(31 29 29 / 55%)),{{ app.user.style.navColor }}' );
+                    {#$('.theme').css('background', 'linear-gradient({{ app.user.style.navColor }},rgb(7 ,7 ,240 , 0.4)),rgba(255,2,238,0.4)' );#}
+                    {#$('.main-sidebar').css( 'background-color', '{{ app.user.style.navColor }}' );#}
             </script>
         {% endif %}
     {% endif %}
     <script>
 
         $('.xx').on( "click", function() {
-        $('nav').css( 'background-color', $(this).text() );
+        // $('nav').css( 'background-color', $(this).text() +'' );
+            $('.theme').css('background','linear-gradient(#00000000, rgb(31 29 29 / 55%)),'+ $(this).text() );
+        // $('.theme').css('background', 'linear-gradient('+$(this).text()+',rgb(7 ,7 ,240 , 0.4)),rgba(255,2,238,1)');
         $('#navcolor').val($(this).text() );
+
         });
     </script>
+<script>
+
+    changeRGB("r");
+    function changeRGB(x) {
+        var col, r, g, b;
+        r = document.getElementById("slideRed").value;
+        g = document.getElementById("slideGreen").value;
+        b = document.getElementById("slideBlue").value;
+        col = w3color("rgb(" + r + "," + g + "," + b + ")");
+        document.getElementById('valRed2').innerHTML = r;
+        document.getElementById('valGreen2').innerHTML = g;
+        document.getElementById('valBlue2').innerHTML = b;
+        document.getElementById('rgbresult').style.backgroundColor = col.toRgbString();
+        document.getElementById('rgbresulttext').innerHTML = col.toRgbString();
+
+
+        if (col.isDark(150)) {
+            document.getElementById('rgbresulttext').style.color = "#ffffff";
+        } else {
+            document.getElementById('rgbresulttext').style.color = "#1f2d3d";
+        }
+    }
+
+</script>
 
 </html>
 </div></body>

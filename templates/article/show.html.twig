@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+<div class="pt-5" style="margin-top: inherit ;">
+{% if app.user.id == article.userCreated.id %}
+    <a href="{{ path('article_edit', {'slug': article.slug}) }}">edit</a>
+    {% endif %}
+    <div class="post clearfix p-2">
+        <div class="user-block">
+            <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
+            <span class="username">
+                          <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
+                          <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
+                        </span>
+            <span class="description"> publier le {{ article.createdAt | date('Y-m-d H:i:s')  }}</span>
+        </div>
+        <!-- /.user-block -->
+        <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
+        <p>
+            {{ article.description }}
+        </p>
+
+
+    </div>
+</div>
+{% endblock %}
