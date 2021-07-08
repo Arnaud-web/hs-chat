@@ -42,7 +42,7 @@
         background-attachment: fixed;
         background-color: black;
         /*background-color: rgba(255,255,255,0.5);*/
-        background-image: linear-gradient(rgba(255,255,255,0.9),rgba(0,0,0,0.8)), url('../../dist/img/photo4.jpg');
+        background-image: linear-gradient(rgba(255,255,255,1),rgba(100,100,130,0.8)), url('../../dist/img/photo4.jpg');
     }
     .style_contenu {
         margin: 20px;
@@ -55,6 +55,7 @@
         min-height: 600px!important;
     }
 </style>
+
 <body class="style_body layout-navbar-fixed sidebar-collapse sidebar-mini control-sidebar-slide-open sidebar-closed sidebar-collapse layout-fixed layout-navbar-fixed layout-footer-fixed">
 {% include "navBar.html.twig"  %}
 {% include "sideBar.html.twig"  %}
@@ -66,7 +67,7 @@
 </div>
 </body>
 <footer class=" main-footer" style="    bottom: 0; border-top:none ;
-    position: fixed; width: 100%; background :linear-gradient(#00000000, rgba(31 ,29 ,29 ,0.9)){{ app.user.style.navColor }} ">
+    position: fixed; width: 100%; background :linear-gradient(#00000000, rgba(31 ,29 ,29 ,0.9)){{ app.user.style? app.user.style.navColor : '' }} ">
     <strong>Copyright © 2021 <a>MySite</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">

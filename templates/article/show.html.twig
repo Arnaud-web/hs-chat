@@ -3,11 +3,34 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
+
 <div class="pt-2" style="">
+
 {% if app.user.id == article.userCreated.id %}
    <div > <a class=" btn btn-outline-info" href="{{ path('article_edit', {'slug': article.slug}) }}"> <i class="fas fa-edit"></i> edit</a>
    </div>
     {% endif %}
+
+    <div class="description">
+        {% if article.articleVu %}
+
+                <a class="btn  btn-app btn-sm bg-info butt">
+                    <span class="badge bg-danger">{{ article.articleVu.userVu | length }}</span>
+                    <i class="fas fa-eye"></i> Vu
+                </a>
+
+        {% endif %}
+        <a href="{{ path('article_show',{'slug':article.slug,'like':true}) }}" class="btn btn-app  bg-info">
+            <span class="badge bg-danger">{{ article.likeArticle.userLike is defined?  article.likeArticle.userLike | length: '' }}</span>
+            {% if article.likeArticle.userLike is defined %}
+            <i class="{{ article.likeArticle.userLike.contains(app.user) ? 'text-danger': '' }} fas fa-heart"></i>
+                {% else %}
+                <i class="fas fa-heart"></i>
+            {% endif %}
+            Likes
+        </a>
+    </div>
+
     <div class="post clearfix p-2 ">
         <div class="user-block">
             <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{ article.userCreated.photo ? asset(article.userCreated.photo) : '/avatar.png' }}" alt="User Image">
@@ -15,10 +38,16 @@
                           <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
                           <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
                         </span>
-            <span class="description"> publier le {{ article.createdAt | date('Y-m-d H:i:s')  }}</span>
+            <span class="description"> publier le {{ article.publishedAt | date('Y-m-d H:i:s')  }}</span>
         </div>
+
         <!-- /.user-block -->
         <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
+        {% if article.image %}
+        <div class="row gx-4 gx-lg-5 align-items-center ">
+            <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
+        </div>
+        {% endif %}
         <p>
             {{ article.description }}
         </p>

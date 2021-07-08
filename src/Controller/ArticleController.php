@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\ArticleVu;
+use App\Entity\LikeArticle;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +18,7 @@ class ArticleController extends AbstractController
     #[Route('/', name: 'article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository): Response
     {
-        $articles = $articleRepository->findBy(['statu'=>true]);
+        $articles = $articleRepository->findBy(['statu'=>true],['publishedAt'=>'desc']);
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
             'article_index'=>true
@@ -48,9 +50,17 @@ class ArticleController extends AbstractController
             $article->setSlug($randomletter);
             $article->setCreatedAt(new \DateTime());
             if($article->getStatu() == true){
-                $article->getPublishedAt(new \DateTime());
+                $article->setPublishedAt(new \DateTime());
             }
             $entityManager->persist($article);
+            $entityManager->flush();
+            $articleVu = new ArticleVu();
+            $articleVu->setArticle($article);
+            $entityManager->persist($articleVu);
+            $entityManager->flush();
+            $articleLike = new LikeArticle();
+            $articleLike->setArticle($article);
+            $entityManager->persist($articleLike);
             $entityManager->flush();
 
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
@@ -64,8 +74,42 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'article_show', methods: ['GET'])]
-    public function show(Article $article): Response
+    public function show(Article $article,Request $request): Response
     {
+        if($this->getUser()->getId() != $article->getUserCreated()->getId()){
+            $articleVu = $article->getArticleVu();
+          if(!$articleVu){
+              $articleVu = new ArticleVu();
+              $articleVu->setArticle($article);
+          }
+
+//          dd($articleVu->getUserVu()->contains($this->getUser()));
+          if(!$articleVu->getUserVu()->contains($this->getUser())){
+              $articleVu->addUserVu($this->getUser());
+              $this->getDoctrine()->getManager()->persist($articleVu);
+              $this->getDoctrine()->getManager()->flush();
+            }
+
+
+        }
+
+//        dd($request->query->get('like'));
+        if($request->query->get('like')){
+            $like = $article->getLikeArticle();
+            if(!$like){
+                $like = new LikeArticle();
+                $like->setArticle($article);
+            }
+            if($like->getUserLike()->contains($this->getUser())){
+                $like->getUserLike()->removeElement($this->getUser());
+            }else{
+                $like->addUserLike($this->getUser());
+            }
+            $this->getDoctrine()->getManager()->persist($like);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('article_show',['slug'=>$article->getSlug()]);
+        }
+//        dd($article->getLikeArticle()->getUserLike()[0]->getName());
         return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
@@ -78,7 +122,11 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            if($article->getStatu() == true){
+                $article->setPublishedAt(new \DateTime());
+            }
+//            dd($article);
+            $this->getDoctrine()->getManager()->persist($article);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);

@@ -76,6 +76,16 @@ class Article
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToOne(targetEntity=ArticleVu::class, mappedBy="article", cascade={"persist", "remove"})
+     */
+    private $articleVu;
+
+    /**
+     * @ORM\OneToOne(targetEntity=LikeArticle::class, mappedBy="article", cascade={"persist", "remove"})
+     */
+    private $likeArticle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -212,6 +222,50 @@ class Article
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getArticleVu(): ?ArticleVu
+    {
+        return $this->articleVu;
+    }
+
+    public function setArticleVu(?ArticleVu $articleVu): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($articleVu === null && $this->articleVu !== null) {
+            $this->articleVu->setArticle(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($articleVu !== null && $articleVu->getArticle() !== $this) {
+            $articleVu->setArticle($this);
+        }
+
+        $this->articleVu = $articleVu;
+
+        return $this;
+    }
+
+    public function getLikeArticle(): ?LikeArticle
+    {
+        return $this->likeArticle;
+    }
+
+    public function setLikeArticle(?LikeArticle $likeArticle): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($likeArticle === null && $this->likeArticle !== null) {
+            $this->likeArticle->setArticle(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($likeArticle !== null && $likeArticle->getArticle() !== $this) {
+            $likeArticle->setArticle($this);
+        }
+
+        $this->likeArticle = $likeArticle;
 
         return $this;
     }

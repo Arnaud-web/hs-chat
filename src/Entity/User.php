@@ -118,6 +118,16 @@ class User implements UserInterface
      */
     private $articles;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=ArticleVu::class, mappedBy="userVu")
+     */
+    private $articleVus;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=LikeArticle::class, mappedBy="userLike")
+     */
+    private $likeArticles;
+
     public function __construct()
     {
         $this->userPhotos = new ArrayCollection();
@@ -127,6 +137,8 @@ class User implements UserInterface
         $this->messagesReceved = new ArrayCollection();
         $this->messageVus = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->articleVus = new ArrayCollection();
+        $this->likeArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -555,6 +567,10 @@ class User implements UserInterface
 
     public function getStyle(): ?Style
     {
+        if(!$this->style){
+            $this->style = new Style();
+            $this->style->setNavColor('');
+        }
         return $this->style;
     }
 
@@ -600,6 +616,60 @@ class User implements UserInterface
             if ($article->getUserCreated() === $this) {
                 $article->setUserCreated(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleVu[]
+     */
+    public function getArticleVus(): Collection
+    {
+        return $this->articleVus;
+    }
+
+    public function addArticleVu(ArticleVu $articleVu): self
+    {
+        if (!$this->articleVus->contains($articleVu)) {
+            $this->articleVus[] = $articleVu;
+            $articleVu->addUserVu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleVu(ArticleVu $articleVu): self
+    {
+        if ($this->articleVus->removeElement($articleVu)) {
+            $articleVu->removeUserVu($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LikeArticle[]
+     */
+    public function getLikeArticles(): Collection
+    {
+        return $this->likeArticles;
+    }
+
+    public function addLikeArticle(LikeArticle $likeArticle): self
+    {
+        if (!$this->likeArticles->contains($likeArticle)) {
+            $this->likeArticles[] = $likeArticle;
+            $likeArticle->addUserLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikeArticle(LikeArticle $likeArticle): self
+    {
+        if ($this->likeArticles->removeElement($likeArticle)) {
+            $likeArticle->removeUserLike($this);
         }
 
         return $this;

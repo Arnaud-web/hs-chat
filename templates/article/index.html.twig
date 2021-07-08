@@ -8,6 +8,7 @@
     <div class="" style="">
 
         {% for article in articles %}
+{#            {{ dump(article.publishedAt) }}#}
             {% if article.image %}
                 <div>
                     <div class="user-block" style="display:contents">
@@ -16,7 +17,7 @@
                           <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
                           <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
                         </span>
-                        <span class="description"> publier le {{ article.createdAt | date('Y-m-d H:i:s')  }}</span>
+                        <span class="description"> publier le {{ article.publishedAt | date('Y-m-d H:i:s')  }}</span>
                     </div>
                     <br>
             <div class=" mb-6">
@@ -30,6 +31,13 @@
                     </div>
                 </div>
                 <div class="col-12 pt-3">
+                <div class="description">
+                    {% if article.articleVu %}
+                        <div>
+                            <span><i class="fas fa-eye" ></i> {{ article.articleVu.userVu | length }}</span>
+                        </div>
+                        {% endif %}
+                        </div>
                     <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">Plus ...</a>
                     <hr>
                 </div>
@@ -43,13 +51,20 @@
                           <a href="{{ path('user_show', {'name': article.userCreated.name })}}">{{ article.userCreated.name }}</a>
                           <a href="#" class="float-right badge theme ">{{ article.categorie.label }}</a>
                         </span>
-                    <span class="description"> publier le {{ article.createdAt | date('Y-m-d H:i:s')  }}</span>
+                    <span class="description"> publier le {{ article.publishedAt | date('Y-m-d H:i:s')  }}</span>
                 </div>
                 <!-- /.user-block -->
                 <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
                 <p>
             {{ article.description }}
                 </p>
+                <div class="description">
+                    {% if article.articleVu %}
+                        <div>
+                            <span><i class="fas fa-eye" ></i> {{ article.articleVu.userVu | length }}</span>
+                        </div>
+                    {% endif %}
+                </div>
                 <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">Plus ...</a>
 
             </div>
