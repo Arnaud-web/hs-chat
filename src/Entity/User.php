@@ -128,6 +128,11 @@ class User implements UserInterface
      */
     private $likeArticles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="userComment")
+     */
+    private $commentaires;
+
     public function __construct()
     {
         $this->userPhotos = new ArrayCollection();
@@ -139,6 +144,7 @@ class User implements UserInterface
         $this->articles = new ArrayCollection();
         $this->articleVus = new ArrayCollection();
         $this->likeArticles = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -670,6 +676,36 @@ class User implements UserInterface
     {
         if ($this->likeArticles->removeElement($likeArticle)) {
             $likeArticle->removeUserLike($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setUserComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getUserComment() === $this) {
+                $commentaire->setUserComment(null);
+            }
         }
 
         return $this;

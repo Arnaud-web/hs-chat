@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\ArticleVu;
+use App\Entity\Commentaire;
 use App\Entity\LikeArticle;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
@@ -108,6 +109,18 @@ class ArticleController extends AbstractController
             $this->getDoctrine()->getManager()->persist($like);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('article_show',['slug'=>$article->getSlug()]);
+        }
+
+        if($request->query->get('comment')){
+            $comment = new Commentaire();
+            $comment->setArticle($article);
+            $comment->setCommentedAt(new \DateTime());
+            $comment->setContent($request->query->get('comment'));
+            $comment->getUserComment($this->getUser());
+            $this->getDoctrine()->getManager()->persist($comment);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('article_show',['slug'=>$article->getSlug()]);
+
         }
 //        dd($article->getLikeArticle()->getUserLike()[0]->getName());
         return $this->render('article/show.html.twig', [
