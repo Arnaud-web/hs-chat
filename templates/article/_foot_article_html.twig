@@ -1,0 +1,12 @@
+<div class="description">
+    <div>
+        {% if article.articleVu %}
+            <span class="badge bg-info"> <i class="fas fa-eye" ></i> {{ article.articleVu.userVu | length }}</span>
+
+        {% endif %}
+        {% if article.likeArticle %}
+            <span class="badge bg-info"><i class="{{ article.likeArticle.userLike.contains(app.user) ? 'text-danger': '' }} fas fa-heart"></i> {{ article.likeArticle.userLike is defined?  article.likeArticle.userLike | length: '' }}</span>
+        {% endif %}
+        <span class="badge bg-info"> <i class="fas fa-comment"></i> commentaire {{ article.commentaires | length }}</span>
+    </div>
+</div>

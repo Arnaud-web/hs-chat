@@ -29,6 +29,10 @@
             {% endif %}
             Likes
         </a>
+        <a class="btn  btn-app btn-sm bg-info butt">
+            <span class="badge bg-danger">{{ article.commentaires | length }}</span>
+            <i class="fas fa-comment"></i> commentaire
+        </a>
     </div>
 
     <div class="post clearfix p-2 ">
@@ -62,5 +66,30 @@
             </div>
         </div>
     </form>
+    <div>
+        {% for comment in comments %}
+            <div class="direct-chat-msg">
+                <div class="direct-chat-infos clearfix">
+						<span class="direct-chat-name float-left">
+							{{ comment.userComment.name }}
+						</span>
+                    <span class="direct-chat-timestamp float-right">{{ comment.commentedAt | date('h:i - j/m/Y') }}</span>
+                </div>
+                <!-- /.direct-chat-infos -->
+                <div>
+                    <img src="/uploads/images/users/profil{{comment.userComment.photo ? asset(comment.userComment.photo) : '/avatar.png' }}" width="40px" class="float-left img-circle img-bordered-sm" alt="Message User Image">
+
+                    <!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                        {{comment.content}}
+                    </div>
+                </div>
+                <!-- /.direct-chat-text -->
+            </div>
+
+        {% endfor %}
+        {{ knp_pagination_render(comments,'article/_pagination.html.twig') }}
+    </div>
 </div>
+
 {% endblock %}

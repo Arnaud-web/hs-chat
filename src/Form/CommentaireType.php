@@ -13,8 +13,8 @@ class CommentaireType extends AbstractType
     {
         $builder
             ->add('commentedAt')
-            ->add('article')
-            ->add('userComment')
+//            ->add('article')
+//            ->add('userComment')
         ;
     }
 

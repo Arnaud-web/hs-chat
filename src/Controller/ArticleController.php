@@ -8,6 +8,7 @@ use App\Entity\Commentaire;
 use App\Entity\LikeArticle;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,7 +76,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'article_show', methods: ['GET'])]
-    public function show(Article $article,Request $request): Response
+    public function show(PaginatorInterface $paginator,Article $article,Request $request): Response
     {
         if($this->getUser()->getId() != $article->getUserCreated()->getId()){
             $articleVu = $article->getArticleVu();
@@ -116,15 +117,29 @@ class ArticleController extends AbstractController
             $comment->setArticle($article);
             $comment->setCommentedAt(new \DateTime());
             $comment->setContent($request->query->get('comment'));
-            $comment->getUserComment($this->getUser());
+            $comment->setUserComment($this->getUser());
             $this->getDoctrine()->getManager()->persist($comment);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('article_show',['slug'=>$article->getSlug()]);
 
         }
+        $comments = $this->getDoctrine()->getRepository(Commentaire::class)->findBy(['article'=>$article]);
+        $comments = $paginator->paginate(
+        // Doctrine Query, not results
+            $comments,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+//           dd( $request->query->getInt('page',2)),
+            // Items per page
+            4,[
+
+            ]
+        );
+
 //        dd($article->getLikeArticle()->getUserLike()[0]->getName());
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'comments'=>$comments,
         ]);
     }
 

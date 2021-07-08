@@ -32,12 +32,9 @@
                 </div>
                 <div class="col-12 pt-3">
                 <div class="description">
-                    {% if article.articleVu %}
-                        <div>
-                            <span><i class="fas fa-eye" ></i> {{ article.articleVu.userVu | length }}</span>
-                        </div>
-                        {% endif %}
-                        </div>
+                    {% include('article/_foot_article_html.twig') %}
+
+                </div>
                     <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">Plus ...</a>
                     <hr>
                 </div>
@@ -58,13 +55,7 @@
                 <p>
             {{ article.description }}
                 </p>
-                <div class="description">
-                    {% if article.articleVu %}
-                        <div>
-                            <span><i class="fas fa-eye" ></i> {{ article.articleVu.userVu | length }}</span>
-                        </div>
-                    {% endif %}
-                </div>
+                {% include('article/_foot_article_html.twig') %}
                 <a href="{{ path('article_show',{'slug': article.slug }) }}" class="btn btn-outline-info">Plus ...</a>
 
             </div>
