@@ -42,6 +42,17 @@
             <ul style="background-color: rgba(0,0,0,0.3)" class=" nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+
+                <li class="nav-item">
+                    <a style="background-color: rgba(0,0,0,0.2)" href="{{ path('home') }}" class="nav-link {{ home is defined? 'active' : ''}} ">
+                        {#                        <i class="nav-icon fas fa-log"></i>#}
+                        <i class=" nav-icon fas fa-home"></i>
+                        <p>
+                            Home
+                            {#                            <span class="right badge badge-danger">New</span>#}
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ path('all_message_index') }}" class="nav-link {{ creepub is defined ? 'active': '' }}">
                         <a href="#" class="nav-link">
