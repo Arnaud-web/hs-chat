@@ -86,8 +86,7 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "chmod -R 777 public/.",
-	    "mkdir ../../storage"
+            "chmod -R 777 public/."
         ]
     },
     "conflict": {
