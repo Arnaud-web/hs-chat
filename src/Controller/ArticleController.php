@@ -59,14 +59,17 @@ class ArticleController extends AbstractController
 
             // add content
             $contents = $request->request->get('contents');
-            foreach ($contents as $content){
-                $contenu = new Content();
-                $contenu->setTitre($content['titre']);
-                $contenu->setContent($content['content']);
-                $contenu->setArticle($article);
-                $entityManager->persist($contenu);
+            if($contents) {
+
+                foreach ($contents as $content) {
+                    $contenu = new Content();
+                    $contenu->setTitre($content['titre']);
+                    $contenu->setContent($content['content']);
+                    $contenu->setArticle($article);
+                    $entityManager->persist($contenu);
 //                $entityManager->flush();
-                $article->addContent($contenu);
+                    $article->addContent($contenu);
+                }
             }
 
             $entityManager->persist($article);
