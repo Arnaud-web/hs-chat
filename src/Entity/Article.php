@@ -93,9 +93,15 @@ class Article
      */
     private $commentaires;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Content::class, mappedBy="article")
+     */
+    private $contents;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->contents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -306,6 +312,36 @@ class Article
             // set the owning side to null (unless already changed)
             if ($commentaire->getArticle() === $this) {
                 $commentaire->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Content[]
+     */
+    public function getContents(): Collection
+    {
+        return $this->contents;
+    }
+
+    public function addContent(Content $content): self
+    {
+        if (!$this->contents->contains($content)) {
+            $this->contents[] = $content;
+            $content->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContent(Content $content): self
+    {
+        if ($this->contents->removeElement($content)) {
+            // set the owning side to null (unless already changed)
+            if ($content->getArticle() === $this) {
+                $content->setArticle(null);
             }
         }
 

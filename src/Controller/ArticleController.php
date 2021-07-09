@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\ArticleVu;
 use App\Entity\Commentaire;
+use App\Entity\Content;
 use App\Entity\LikeArticle;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
@@ -46,6 +47,7 @@ class ArticleController extends AbstractController
 
         $randomletter = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, $length);
 //        dd($randomletter);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $article->setUserCreated($this->getUser());
@@ -54,8 +56,25 @@ class ArticleController extends AbstractController
             if($article->getStatu() == true){
                 $article->setPublishedAt(new \DateTime());
             }
+
+            // add content
+            $contents = $request->request->get('contents');
+            foreach ($contents as $content){
+                $contenu = new Content();
+                $contenu->setTitre($content['titre']);
+                $contenu->setContent($content['content']);
+                $contenu->setArticle($article);
+                $entityManager->persist($contenu);
+//                $entityManager->flush();
+                $article->addContent($contenu);
+            }
+
             $entityManager->persist($article);
             $entityManager->flush();
+
+
+
+
             $articleVu = new ArticleVu();
             $articleVu->setArticle($article);
             $entityManager->persist($articleVu);
@@ -153,11 +172,28 @@ class ArticleController extends AbstractController
             if($article->getStatu() == true){
                 $article->setPublishedAt(new \DateTime());
             }
+            $contents = $request->request->get('contents');
+            $repoContent = $this->getDoctrine()->getRepository(Content::class);
+//            dd($contents);
+            if($contents){
+                foreach ($contents as $content){
+                    if(isset($content['id'])){
+                        $articleContent =  $repoContent->findOneBy(['id'=>$content['id']]);
+                    }else{
+                        $articleContent = new Content();
+                        $articleContent->setArticle($article);
+//                        dd("ok");
+                    }
+                    $articleContent->setTitre($content['titre']);
+                    $articleContent->setContent($content['content']);
+                    $this->getDoctrine()->getManager()->persist($articleContent);
+                }
+            }
 //            dd($article);
             $this->getDoctrine()->getManager()->persist($article);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('article_show', ['slug'=>$article->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [

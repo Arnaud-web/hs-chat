@@ -46,7 +46,7 @@
         </div>
 
         <!-- /.user-block -->
-        <h5 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h5>
+        <h3 style="font: bold; color: {{ app.user.style.navColor }}" >{{ article.titre }}</h3>
         {% if article.image %}
         <div class="row gx-4 gx-lg-5 align-items-center ">
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ vich_uploader_asset(article) }}" alt="..."></div>
@@ -55,7 +55,13 @@
         <p>
             {{ article.description }}
         </p>
-
+        <div class="pl-4">
+            {% for content in article.contents %}
+                <h5 id="event-names">{{ content.titre }}</h5>
+                <p class="pl-2" >{{ content.content }}</p>
+                <br>
+            {% endfor %}
+        </div>
 
     </div>
     <form class="form-horizontal">

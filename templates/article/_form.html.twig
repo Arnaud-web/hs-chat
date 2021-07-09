@@ -44,7 +44,47 @@
         </div>
 
     </div>
+    {% if article.contents %}
+        <div id="content">
+        <input type="hidden" id="num" value={{ article.contents | length -1 }}>
+            {% set num = 0 %}
+        {% for content in article.contents %}
+                <div>
+                    <label>chapitre {{ num }}  </label>
+                    <input type="hidden" name="contents[{{ num }}][id]" value={{ content.id }}>
+                    <input type="text" name="contents[{{ num }}][titre]" class="form-control" value="{{ content.titre }}" placeholder="sous titre">
+                    <textarea placeholder="Contenu" name="contents[{{ num }}][content]" class="form-control" >{{ content.content }}</textarea>
+                </div>
+            {% set num= num+1 %}
+        {% endfor %}
+        </div>
+
+    {% else %}
+    <div id="content">
+        <input type="hidden" id="num" value=0>
+        <div>
+            <label>chapitre  </label>
+            <input type="text" name="contents[0][titre]" class="form-control" placeholder="sous titre">
+            <textarea placeholder="Contenu" name="contents[0][content]" class="form-control" ></textarea>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    <a class="btn btn-success" id = "addContent">ajouter un paragraphe</a>
+    <br>
+    <br>
+
     <button class="btn btn-success"><i class="fas fa-upload"></i> {{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
 
 </div>
+<script>
+    var num = $('#num').val();
+    $('#addContent').on('click',function () {
+        num++;
+        $('#content').append(' <div><label>chapitre '+num+' </label>');
+        $('#content').append('<input type="text" name="contents['+num+'][titre]" class="form-control" placeholder="sous titre">');
+        $('#content').append(' <textarea placeholder="Contenu" name="contents['+num+'][content]" class="form-control" ></textarea>');
+        $('#content').append('</div>');
+    });
+</script>
