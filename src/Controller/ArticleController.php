@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\ArticleVu;
+use App\Entity\Categorie;
 use App\Entity\Commentaire;
 use App\Entity\Content;
 use App\Entity\LikeArticle;
@@ -19,12 +20,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(Request $request,PaginatorInterface $paginator,ArticleRepository $articleRepository): Response
     {
-        $articles = $articleRepository->findBy(['statu'=>true],['publishedAt'=>'desc']);
+        if($request->query->get('id')){
+            $id = $request->query->get('id');
+            $articles = $articleRepository->findBy(['statu'=>true,'categorie'=>$id],['publishedAt'=>'desc']);
+        }else{
+            $articles = $articleRepository->findBy(['statu'=>true],['publishedAt'=>'desc']);
+        }
+        $articles = $paginator->paginate(
+        // Doctrine Query, not results
+            $articles,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+//           dd( $request->query->getInt('page',2)),
+            // Items per page
+            4,[
+
+            ]
+        );
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
-            'article_index'=>true
+            'article_index'=>true,
+            'categories'=>$this->getDoctrine()->getRepository(Categorie::class)->findAll(),
         ]);
     }
     #[Route('/my_publications', name: 'my_article_index', methods: ['GET'])]

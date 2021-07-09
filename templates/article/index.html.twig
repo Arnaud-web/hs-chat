@@ -6,7 +6,11 @@
 
 
     <div class="" style="">
-
+<div class="nav ">
+    {% for categorie in categories %}
+        <li class="nav-item p-2 m-auto"><a href="{{ path('article_index',{'id':categorie.id}) }}" class="btn btn-outline-dark" >{{ categorie.label }}</a></li>
+    {% endfor %}
+</div>
         {% for article in articles %}
 {#            {{ dump(article.publishedAt) }}#}
             {% if article.image %}
@@ -65,7 +69,9 @@
 
             {% endif %}
         {% endfor %}
-
+<div>
+    {{ knp_pagination_render(articles,'article/index_pagination.html.twig') }}
+</div>
     </div>
 
 {#    <a href="{{ path('article_new') }}">Create new</a>#}
