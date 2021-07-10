@@ -54,23 +54,27 @@
 {#        </thead>#}
 {#        <tbody>#}
         <div class="active "   id="activity">
+            <table>
             {% for message in messages %}
                 <!-- Post -->
 {#                <a href="{{ path('message_new', {'name': message.userSend.name}) }}">#}
+                <tr class="">
 
-                <div class="post clearfix p-1 m-0" style="background-color : {{ message.sender(app.user)? 'rgba(255,255,255,0.2)':'rgba(255,255,255,0.5)'}}" >
 
-                    <div class="user-block">
+                <td class=" post clearfix p-1 m-0" style="background-color : {{ message.sender(app.user)? 'rgba(255,255,255,0.2)':'rgba(255,255,255,0.5)'}}" >
+
+                    <p class="user-block ">
                         <img class="img-circle img-bordered-sm" src="/uploads/images/users/profil{{message.userSend.photo ? asset(message.userSend.photo) : '/avatar.png' }}" alt="User Image">
+                        <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
+
                         <span class="username">
                           <a href="{{ path('user_show', {'name': message.userSend.name}) }}">{{ message.userSend.name }}</a>
 {#                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>#}
                         </span>
-                        <span class="description"><i class="fas fa-clock"></i>  {{ message.sendAt | date('Y-m-d H:i:s')   }}</span>
                         {% if message.getMessageVu(message.userReceved.id) %}
                             <span class="description">{{ message.sender(app.user)? 'Receved : ': ''}} {{ message.sender(app.user)?   message.getMessageVu(message.userReceved.id).vuAt |date('Y-m-d H:i:s') : '' }}</span>
                         {% endif %}
-                    </div>
+                    </p>
                     <!-- /.user-block -->
                     <p>
                         <a href="{{ path('message_new', {'name': message.userSend.name}) }}" ><span class=" pl-4" > {{ message.message }} </span></a>
@@ -86,9 +90,15 @@
                                 <span class=" float-right p-2 badge badge-success badge-sm ">  </span>
                         {% endif %}
                     </p>
-                </div>
+                </p>
+                </td>
+
+                </tr>
+
+
 
             {% endfor %}
+            </table>
 
         </div>
         {{ knp_pagination_render(messages,'user/_pagination.html.twig') }}
